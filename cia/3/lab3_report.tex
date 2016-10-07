@@ -1,0 +1,300 @@
+\documentclass[a4paper]{article}
+\usepackage[top,page]{appendix}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage[margin=0.65 in]{geometry}
+
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+
+\title{Classical internet applications
+\newline Lab session: DNS-1}
+\author{Anatoly Tykushin \small { Security and Network Engineering, a.tykushin@innopolis.ru}}
+
+\begin{document}
+\pagenumbering{arabic}
+\maketitle
+\tableofcontents 
+
+\section{Why is it wise to use a signature to check your download?}
+\tab A hash value processed on the downloaded file is a way to make sure that the content is transferred well and has not been damaged during the download process (authenticity and integrity).
+
+\section{Which kind of signature is the best one to use? Why?}
+
+\tab One quick and easy way to verify the integrity of a downloaded file is to use various checksum tools (e.g., md5sum, sha256sum, cksum) to compute and compare checksums (e.g., MD5, SHA or CRC). However, checksums are vulnerable to collision attacks, and also cannot be used to verify the authenticity (i.e., owner) of a file.
+
+Second way is to use asymmetric cryptography. By encrypting a message's hash value with the sender's private key  generates a digital signature of a message. Now anyone can verify the signature by decrypting it using sender's public key. If this reveals the correct hash value for the message, so it is the only possible sender since he is the only one to have the private key that fits public key. Now anyone can find out about the encrypted message's hash value.
+
+To sum it up, using combination of asymmetric cryptography with hash algorithms is the best way to support message authentication and integrity checking. One of the best example is PGP (pretty good privacy).
+
+In appendix \ref{appendix:cmds} you can see a list of commands and their output which was used to verify signatures of unbound sources.
+
+\newpage
+\section{Why are caching-only name servers still useful?}
+
+\tab DNS cache servers fundamentally provide options described in table \ref{table:dns_cache_opt}
+
+\begin{table}[h!]
+\begin{center}
+  \begin{tabular}{ c | c }
+    \textbf{Option} & \textbf{Value}\\
+    \hline
+	Avaliabiity & Should only respond to queries that originate from a local user base \\ \hline
+	Types of query that it should answer & recursive queries \\ \hline
+	Design of a software implementation & Must maintain state because of recursive queries and an internal cache\\ \hline
+	Records that it should attempt to resolve & Should attempt to resolve any request \\ \hline
+	\end{tabular}
+\end{center}
+\caption{DNS Cache servers fundemental providing abilities}
+\label{table:dns_cache_opt}
+\end{table}
+	
+\tab Also DNS cache servers (e.g. Unbound) are:
+\begin{itemize}
+	\item lightweight
+	\item high performance
+	\item adding of software diversity
+	\item single-purpose server
+	\item securable
+	\item manageable and portable
+\end{itemize}
+
+To sum it up, caching-only dns servers are used to store queries and prevent excessive traffic. Also it would be useful to mention that \begin{equation} V_{cache} \leq 1024 Mbytes \end{equation} because it provides cache efficiency due to CPU load.
+ 
+\section{Unbound configuration}
+\tab Created configuration file of caching-only unbound dns-server is shown in the listing below.
+
+ \begin{verbatim}
+server:
+	verbosity: 2				# sets verbosity level to show detailed information in logs
+	port: 53
+	interface: 188.130.155.38		# interface to listen
+	
+	do-ip4: yes
+	do-ip6: no                  # allow ip version 4 not 6
+	do-udp: yes
+	do-tcp: yes                 # allow both udp and tcp
+	access-control: 188.130.155.0/24 allow      # acl config	
+	access-control: 127.0.0.0/8 allow           # acl for localhost
+	#access-control: 0.0.0.0/0 refuse       
+	username: "unbound"                         # run unbound as user
+	directory: "/usr/local/etc/unbound"         # where to store files
+
+	logfile: "dns.log"                          # name of log file in "directory"
+	use-syslog: no
+	hide-version: yes		# do not to show information of unbound's version
+
+remote-control:
+	control-enable: yes
+
+forward-zone:				#forward all queries to google
+	name: "."
+ 	forward-addr: 8.8.8.8 #google.com
+
+forward-zone:				# forward queries to the zone "st5.os3.su" to the
+	name: "st5.os3.su"
+ 	forward-addr: 188.130.155.38@5355   # ip4 + port to the authoritative server
+
+\end{verbatim}
+
+The action \textbf{allow} gives access to clients from subnet, written in access-control record. It gives only access for recursion clients (which is what almost all clients need).  Nonrecursive queries are refused.  \newline 
+The \textbf{allow} action does allow nonrecursive queries to access the local-data that is configured. The reason is that this does not involve the unbound server recursive lookup  algorithm, and static data is served in the reply. This supports normal operations where nonrecursive queries are made for the authoritative data. For nonrecursive queries any replies from the dynamic cache are refused.
+
+So, yes, this configuration will enables recursive queries for users from subnet 188.130.155.0/24. 
+
+
+
+\section{Testing configuration}
+\tab \textbf{Why do the \textit{unbound-checkconf} program returns a value?} \newline
+\tab This program returns a value to use it in script writing, or using in some other software as it provides good abilities for analysis. \newline 
+\tab But writing log to the screen of the terminal is very useful for users so it would be a wise decision to support both logging and return value abilities.  
+
+\section{Changes you made to configuration to allow remote control}
+
+\tab To use remote control as a tool to send commands to the server during runtime. To enable this commands we have to do the following steps:
+\begin{description}
+	\item[Step 1:] \textbf{\textit{unbound-control-setup}} to generate the necessary TLS key files (they are put in the default install directory).
+	\item[Step 2:] add this option to configuration file \textbf{\newline remote-control: \newline \tab control-enable: yes \newline \tab control-port: 34567   # but to change this you have to restart unbound}
+\end{description}
+
+Also you can setup options like:
+\begin{description}
+    \item[control-interface: ip address or path ] 
+            Give IPv4 or IPv6 addresses or local socket path to listen on  for control  commands.   By  default  localhost (127.0.0.1 and ::1) is listened to. Use 0.0.0.0 and ::0 to listen to all interfaces. If you  change  this  and  permissions  have  been  dropped, you must restart the server for the change to take effect.
+    \item[control-port: port number] The port number to listen on for IPv4 or IPv6 control interfaces, default is 8953. If you change this and permissions have been dropped, you must restart the server for the change to take effect.
+    \item[other options:] that enable you to use certificates
+\end{description}
+
+To see how it works 
+\begin{verbatim}
+tyvision@st5: sudo netstat -tlpun
+[sudo] password for tyvision: 
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 127.0.0.1:34567         0.0.0.0:*               LISTEN      28103/unbound   
+tcp        0      0 188.130.155.38:5355     0.0.0.0:*               LISTEN      28103/unbound 
+\end{verbatim}
+
+
+\section{What other commands/functions does unbound-control provide?}
+\textbf{Unbound-control} is a unbound remote server control utility.  performs remote administration on the unbound DNS server. It reads the configuration file (but doesn't rewrite it), contacts the unbound server over SSL sends the command and displays the result. 
+
+It's more likely to list commands provided by \textbf{unbound-control} it the table. Table \ref{table:unbound_ctrl_cmds} contains most frequently used commands.
+
+\begin{table}[h!]
+\begin{center}
+  \begin{tabular}{| c | c |}
+  \hline
+    \textbf{Option} & \textbf{Description}\\
+    \hline
+	start & Start  the  server.  Simply  execs unbound\\ \hline
+	stop & Stop the server. The server daemon exits. \\ \hline
+	reload & Reload the server. This flushes the cache and reads  the  config
+              file fresh \\ \hline
+	verbosity & Change  verbosity  value  for  logging \\ \hline
+	local zone \textit{name type} & Add new local zone with name and type \\ \hline
+	load cache &  The contents of the cache is loaded from stdin \\ \hline
+	dump cache & The contents of the cache is printed in a text format to stdout\\ \hline
+	forward add [+i ] \textit{zone addr} & Add a new forward zone to running unbound\\ \hline
+ 	forward remove [+i ] \textit{zone} & Remove a forward zone from running unbound\\ \hline
+	\end{tabular}
+	\caption{Unbound-control commands}
+\label{table:unbound_ctrl_cmds}
+\end{center}
+\end{table}
+
+You can see example of usage below
+\begin{verbatim}
+tyvision@st5:/usr/local/etc/unbound$ sudo unbound-control verbosity 3
+ok
+\end{verbatim}
+
+\section{What do you need to put in resolv.conf (and/orotherfiles) to use your own name server?}
+\tab As already mentioned file \textbf{\textit{resolv.conf}} is automatically generated by resolv-conf utility. To add a record to the \textbf{\textit{resolv.conf}} file you have to write \textbf{nameserver  \textit{ [IP address of NSD]} } 
+in a \textbf{\textit{/etc/resolvconf/resolv.conf.d/base}} file. 
+
+\section{Forward mapping zone}
+\tab Log of the forward zone is shown in the list below:
+
+\begin{verbatim}
+================================== NSD zone file =================================
+==================================================================================
+
+$ORIGIN st5.os3.su.
+$TTL 1800
+@       IN      SOA     st5.os3.su.      godofzone.st5.os3.su. (
+                        2014070312        ; serial number (was 201407201)
+                        3600                    ; refresh
+                        900                     ; retry
+                        1209600                 ; expire
+                        1800                    ; ttl
+                        )
+; Name servers
+                    IN      NS      sne1.st5.os3.su.
+                    IN      NS      sne2.st5.os3.su.
+; Mail exchange
+                    MX		10		mail1
+                    MX		20 		thegod
+; A records for name servers
+sne2                 IN      A       188.130.155.38
+sne1                 IN      A       188.130.155.36
+sne3				 IN 	 A  	 188.130.155.46
+@                    IN      A       188.130.155.38
+
+; Canonical names 
+numbaone			 CNAME			 sne1
+godmail				 CNAME			 thegod.st5.os3.su.
+
+; Additional A records
+
+\end{verbatim}
+
+\section{Delegation}
+\tab \textbf{If Azat had not yet implemented the delegation, what information would you need to give him so that he can implement it?} \newline \newline I have to tell him this data:
+\begin{description}
+	\item[\tab domain:] st5.os3.su
+	\item[\tab ip:] 188.130.155.38
+	\item[\tab nameserver:] ns1.os3.su ; the next name server points to ns1 in the os3.su zone above
+\end{description}
+
+\section{Important requirements}
+\tab \textbf{What important requirement is not yet met for your subdomain?} \newline \newline
+In the lists below you can see what important requirements do we have for our subdomain. You need the following records in your hosts DNS:
+\begin{itemize}
+	\item two Name Server (NS) records pointing to the authoritative name servers for your sub-domain
+	\item Address (A) records for the sub-domain name servers
+\end{itemize} 
+\tab And you need to provide a pair of DNS name servers for your sub-domain. They need to serve the following records:
+\begin{itemize}
+	\item a Start of Authority (SOA) record for the sub-domain
+	\item two or more (NS) records
+	\item (A) records for the sub-domain name servers
+\end{itemize} 
+
+\newpage
+\begin{appendices}
+\section{Checking signatures}
+\label{appendix:cmds}
+\begin{verbatim}
+tyvision@st5:~/Downloads$ gpg  unbound-1.5.9.tar.gz.asc 
+gpg: assuming signed data in `unbound-1.5.9.tar.gz'
+gpg: Signature made Thu 09 Jun 2016 03:11:06 PM MSK using RSA key ID 7E045F8D
+gpg: Can't check signature: public key not found
+
+
+tyvision@st5:~/Downloads$ gpg -q --keyserver hkp://hkps.pool.sks-keyservers.net --recv-key 07E045F8D
+gpg: requesting key 7E045F8D from hkp server hkps.pool.sks-keyservers.net
+gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
+gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
+
+
+gpg --edit-key wouter@nlnetlabs.nl trust
+gpg (GnuPG) 1.4.20; Copyright (C) 2015 Free Software Foundation, Inc.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+
+This key was revoked on 2016-08-16 by RSA key 7E045F8D W.C.A. Wijngaards <wouter@nlnetlabs.nl>
+pub  4096R/7E045F8D  created: 2014-06-16  revoked: 2016-08-16  usage: SCEA
+                     trust: unknown       validity: revoked
+[ revoked] (1). W.C.A. Wijngaards <wouter@nlnetlabs.nl>
+
+This key was revoked on 2016-08-16 by RSA key 7E045F8D W.C.A. Wijngaards <wouter@nlnetlabs.nl>
+pub  4096R/7E045F8D  created: 2014-06-16  revoked: 2016-08-16  usage: SCEA
+                     trust: unknown       validity: revoked
+[ revoked] (1). W.C.A. Wijngaards <wouter@nlnetlabs.nl>
+
+Please decide how far you trust this user to correctly verify other users' keys
+(by looking at passports, checking fingerprints from different sources, etc.)
+
+  1 = I don't know or won't say
+  2 = I do NOT trust
+  3 = I trust marginally
+  4 = I trust fully
+  5 = I trust ultimately
+  m = back to the main menu
+
+Your decision? 5
+Do you really want to set this key to ultimate trust? (y/N) y
+
+This key was revoked on 2016-08-16 by RSA key 7E045F8D W.C.A. Wijngaards <wouter@nlnetlabs.nl>
+pub  4096R/7E045F8D  created: 2014-06-16  revoked: 2016-08-16  usage: SCEA
+                     trust: ultimate      validity: revoked
+[ revoked] (1). W.C.A. Wijngaards <wouter@nlnetlabs.nl>
+Please note that the shown key validity is not necessarily correct
+unless you restart the program.
+
+
+gpg unbound-1.5.9.tar.gz.asc 
+gpg: assuming signed data in `unbound-1.5.9.tar.gz'
+gpg: Signature made Thu 09 Jun 2016 03:11:06 PM MSK using RSA key ID 7E045F8D
+gpg: checking the trustdb
+gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
+gpg: depth: 0  valid:   2  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 2u
+gpg: Good signature from "W.C.A. Wijngaards <wouter@nlnetlabs.nl>"
+Primary key fingerprint: EDFA A3F2 CA4E 6EB0 5681  AF8E 9F6F 1C2D 7E04 5F8D
+
+\end{verbatim}
+\end{appendices}
+
+
+\enddocument

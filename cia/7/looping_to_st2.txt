@@ -1,0 +1,52 @@
+Sep 16 15:42:21 st5 sendmail[19317]: gethostbyaddr(172.17.0.1) failed: 1
+Sep 16 15:42:21 st5 sendmail[19317]: alias database /etc/mail/aliases rebuilt by root
+Sep 16 15:42:21 st5 sendmail[19317]: /etc/mail/aliases: 2 aliases, longest 19 bytes, 52 bytes total
+Sep 16 15:42:23 st5 sm-mta[1652]: restarting /usr/sbin/sendmail-mta due to signal
+Sep 16 15:42:23 st5 sm-mta[1652]: gethostbyaddr(172.17.0.1) failed: 1
+Sep 16 15:42:23 st5 sm-mta[19359]: starting daemon (8.15.2): SMTP+queueing@00:10:00
+Sep 16 15:43:23 st5 sendmail[19395]: u8GChNZo019395: from=tyvision, size=293, class=0, nrcpts=1, msgid=<20160916124323.GB1710@st5.os3.su>, relay=tyvision@localhost
+Sep 16 15:43:23 st5 sm-mta[19396]: u8GChNfe019396: from=<tyvision@st5.os3.su>, size=439, class=0, nrcpts=1, msgid=<20160916124323.GB1710@st5.os3.su>, proto=ESMTP, daemon=MTA-v4, relay=localhost [127.0.0.1]
+Sep 16 15:43:23 st5 sendmail[19395]: u8GChNZo019395: to=horn@st2.os3.su, ctladdr=tyvision (1000/1000), delay=00:00:00, xdelay=00:00:00, mailer=relay, pri=30293, relay=[127.0.0.1] [127.0.0.1], dsn=2.0.0, stat=Sent (u8GChNfe019396 Message accepted for delivery)
+Sep 16 15:43:24 st5 sm-mta[19398]: STARTTLS=client, relay=mail.st2.os3.su., version=TLSv1.2, verify=FAIL, cipher=ECDHE-RSA-AES256-GCM-SHA384, bits=256/256
+tyvision@st5:/var/log$ tail -f mail.log
+Sep 16 15:42:23 st5 sm-mta[1652]: restarting /usr/sbin/sendmail-mta due to signal
+Sep 16 15:42:23 st5 sm-mta[1652]: gethostbyaddr(172.17.0.1) failed: 1
+Sep 16 15:42:23 st5 sm-mta[19359]: starting daemon (8.15.2): SMTP+queueing@00:10:00
+Sep 16 15:43:23 st5 sendmail[19395]: u8GChNZo019395: from=tyvision, size=293, class=0, nrcpts=1, msgid=<20160916124323.GB1710@st5.os3.su>, relay=tyvision@localhost
+Sep 16 15:43:23 st5 sm-mta[19396]: u8GChNfe019396: from=<tyvision@st5.os3.su>, size=439, class=0, nrcpts=1, msgid=<20160916124323.GB1710@st5.os3.su>, proto=ESMTP, daemon=MTA-v4, relay=localhost [127.0.0.1]
+Sep 16 15:43:23 st5 sendmail[19395]: u8GChNZo019395: to=horn@st2.os3.su, ctladdr=tyvision (1000/1000), delay=00:00:00, xdelay=00:00:00, mailer=relay, pri=30293, relay=[127.0.0.1] [127.0.0.1], dsn=2.0.0, stat=Sent (u8GChNfe019396 Message accepted for delivery)
+Sep 16 15:43:24 st5 sm-mta[19398]: STARTTLS=client, relay=mail.st2.os3.su., version=TLSv1.2, verify=FAIL, cipher=ECDHE-RSA-AES256-GCM-SHA384, bits=256/256
+Sep 16 15:43:27 st5 sm-mta[19398]: u8GChNfe019396: to=<horn@st2.os3.su>, ctladdr=<tyvision@st5.os3.su> (1000/1000), delay=00:00:04, xdelay=00:00:04, mailer=esmtp, pri=120439, relay=mail.st2.os3.su. [188.130.155.35], dsn=2.0.0, stat=Sent (OK id=1bksUH-0008Rz-3q)
+Sep 16 15:43:33 st5 sm-mta[19400]: u8GChWPt019400: from=<tyvision@st5.os3.su>, size=962, class=0, nrcpts=1, msgid=<20160916124323.GB1710@st5.os3.su>, proto=ESMTP, daemon=MTA-v4, relay=mail.st2.os3.su [188.130.155.35]
+Sep 16 15:43:34 st5 sm-mta[19401]: STARTTLS=client, relay=mail.st2.os3.su., version=TLSv1.2, verify=FAIL, cipher=ECDHE-RSA-AES256-GCM-SHA384, bits=256/256
+Sep 16 15:43:40 st5 sm-mta[19401]: u8GChWPt019400: to=horn@st2.os3.su, ctladdr=<tyvision@st5.os3.su> (1000/1000), delay=00:00:07, xdelay=00:00:06, mailer=esmtp, pri=31175, relay=mail.st2.os3.su. [188.130.155.35], dsn=2.0.0, stat=Sent (OK id=1bksUU-0008Ss-9K)
+Sep 16 15:43:46 st5 sm-mta[19405]: u8GChj0J019405: from=<tyvision@st5.os3.su>, size=1500, class=0, nrcpts=1, msgid=<20160916124323.GB1710@st5.os3.su>, proto=ESMTP, daemon=MTA-v4, relay=mail.st2.os3.su [188.130.155.35]
+Sep 16 15:43:47 st5 sm-mta[19407]: STARTTLS=client, relay=mail.st2.os3.su., version=TLSv1.2, verify=FAIL, cipher=ECDHE-RSA-AES256-GCM-SHA384, bits=256/256
+Sep 16 15:43:53 st5 sm-mta[19407]: u8GChj0J019405: to=horn@st2.os3.su, ctladdr=<tyvision@st5.os3.su> (1000/1000), delay=00:00:07, xdelay=00:00:06, mailer=esmtp, pri=31710, relay=mail.st2.os3.su. [188.130.155.35], dsn=2.0.0, stat=Sent (OK id=1bksUd-0008To-QP)
+Sep 16 15:43:59 st5 sm-mta[19408]: u8GChwtG019408: from=<tyvision@st5.os3.su>, size=2038, class=0, nrcpts=1, msgid=<20160916124323.GB1710@st5.os3.su>, proto=ESMTP, daemon=MTA-v4, relay=mail.st2.os3.su [188.130.155.35]
+Sep 16 15:43:59 st5 sm-mta[19409]: STARTTLS=client, relay=mail.st2.os3.su., version=TLSv1.2, verify=FAIL, cipher=ECDHE-RSA-AES256-GCM-SHA384, bits=256/256
+Sep 16 15:44:02 st5 sm-mta[19409]: u8GChwtG019408: to=horn@st2.os3.su, ctladdr=<tyvision@st5.os3.su> (1000/1000), delay=00:00:03, xdelay=00:00:03, mailer=esmtp, pri=32245, relay=mail.st2.os3.su. [188.130.155.35], dsn=2.0.0, stat=Sent (OK id=1bksUp-0008Uk-U7)
+Sep 16 15:44:11 st5 sm-mta[19418]: u8GCiAKB019418: from=<tyvision@st5.os3.su>, size=2576, class=0, nrcpts=1, msgid=<20160916124323.GB1710@st5.os3.su>, proto=ESMTP, daemon=MTA-v4, relay=mail.st2.os3.su [188.130.155.35]
+Sep 16 15:44:12 st5 sm-mta[19420]: STARTTLS=client, relay=mail.st2.os3.su., version=TLSv1.2, verify=FAIL, cipher=ECDHE-RSA-AES256-GCM-SHA384, bits=256/256
+Sep 16 15:44:14 st5 sm-mta[19420]: u8GCiAKB019418: to=horn@st2.os3.su, ctladdr=<tyvision@st5.os3.su> (1000/1000), delay=00:00:03, xdelay=00:00:03, mailer=esmtp, pri=32780, relay=mail.st2.os3.su. [188.130.155.35], dsn=2.0.0, stat=Sent (OK id=1bksV2-0008Vg-J6)
+Sep 16 15:44:21 st5 sm-mta[19421]: u8GCiK3M019421: from=<tyvision@st5.os3.su>, size=3114, class=0, nrcpts=1, msgid=<20160916124323.GB1710@st5.os3.su>, proto=ESMTP, daemon=MTA-v4, relay=mail.st2.os3.su [188.130.155.35]
+Sep 16 15:44:21 st5 sm-mta[19425]: STARTTLS=client, relay=mail.st2.os3.su., version=TLSv1.2, verify=FAIL, cipher=ECDHE-RSA-AES256-GCM-SHA384, bits=256/256
+Sep 16 15:44:24 st5 sm-mta[19425]: u8GCiK3M019421: to=horn@st2.os3.su, ctladdr=<tyvision@st5.os3.su> (1000/1000), delay=00:00:03, xdelay=00:00:03, mailer=esmtp, pri=33315, relay=mail.st2.os3.su. [188.130.155.35], dsn=2.0.0, stat=Sent (OK id=1bksVB-0008WT-S1)
+Sep 16 15:44:30 st5 sm-mta[19426]: u8GCiTKr019426: from=<tyvision@st5.os3.su>, size=3652, class=0, nrcpts=1, msgid=<20160916124323.GB1710@st5.os3.su>, proto=ESMTP, daemon=MTA-v4, relay=mail.st2.os3.su [188.130.155.35]
+Sep 16 15:44:30 st5 sm-mta[19434]: STARTTLS=client, relay=mail.st2.os3.su., version=TLSv1.2, verify=FAIL, cipher=ECDHE-RSA-AES256-GCM-SHA384, bits=256/256
+Sep 16 15:44:33 st5 sm-mta[19434]: u8GCiTKr019426: to=horn@st2.os3.su, ctladdr=<tyvision@st5.os3.su> (1000/1000), delay=00:00:03, xdelay=00:00:03, mailer=esmtp, pri=33850, relay=mail.st2.os3.su. [188.130.155.35], dsn=2.0.0, stat=Sent (OK id=1bksVK-00005R-To)
+Sep 16 15:44:39 st5 sm-mta[19435]: u8GCicfK019435: from=<tyvision@st5.os3.su>, size=4190, class=0, nrcpts=1, msgid=<20160916124323.GB1710@st5.os3.su>, proto=ESMTP, daemon=MTA-v4, relay=mail.st2.os3.su [188.130.155.35]
+Sep 16 15:44:39 st5 sm-mta[19436]: STARTTLS=client, relay=mail.st2.os3.su., version=TLSv1.2, verify=FAIL, cipher=ECDHE-RSA-AES256-GCM-SHA384, bits=256/256
+Sep 16 15:44:40 st5 sm-mta[19436]: u8GCicfK019435: to=horn@st2.os3.su, ctladdr=<tyvision@st5.os3.su> (1000/1000), delay=00:00:01, xdelay=00:00:01, mailer=esmtp, pri=34385, relay=mail.st2.os3.su. [188.130.155.35], dsn=5.1.1, stat=User unknown
+Sep 16 15:44:40 st5 sm-mta[19436]: u8GCicfK019435: u8GCiefK019436: DSN: User unknown
+Sep 16 15:44:43 st5 sm-mta[19436]: u8GCiefK019436: to=horn@st2.os3.su, delay=00:00:03, xdelay=00:00:03, mailer=esmtp, pri=30000, relay=mail.st2.os3.su. [188.130.155.35], dsn=2.0.0, stat=Sent (OK id=1bksVU-00006C-Bn)
+Sep 16 15:44:49 st5 sm-mta[19438]: u8GCimf0019438: from=<>, size=6553, class=0, nrcpts=1, msgid=<201609161244.u8GCiefK019436@st5.os3.su>, proto=ESMTP, daemon=MTA-v4, relay=mail.st2.os3.su [188.130.155.35]
+Sep 16 15:44:49 st5 sm-mta[19440]: STARTTLS=client, relay=mail.st2.os3.su., version=TLSv1.2, verify=FAIL, cipher=ECDHE-RSA-AES256-GCM-SHA384, bits=256/256
+Sep 16 15:44:52 st5 sm-mta[19440]: u8GCimf0019438: to=horn@st2.os3.su, delay=00:00:03, xdelay=00:00:03, mailer=esmtp, pri=36748, relay=mail.st2.os3.su. [188.130.155.35], dsn=2.0.0, stat=Sent (OK id=1bksVd-000077-Me)
+Sep 16 15:44:58 st5 sm-mta[19442]: u8GCivJV019442: from=<>, size=7033, class=0, nrcpts=1, msgid=<201609161244.u8GCiefK019436@st5.os3.su>, proto=ESMTP, daemon=MTA-v4, relay=mail.st2.os3.su [188.130.155.35]
+Sep 16 15:44:58 st5 sm-mta[19443]: STARTTLS=client, relay=mail.st2.os3.su., version=TLSv1.2, verify=FAIL, cipher=ECDHE-RSA-AES256-GCM-SHA384, bits=256/256
+Sep 16 15:45:01 st5 sm-mta[19443]: u8GCivJV019442: to=horn@st2.os3.su, delay=00:00:03, xdelay=00:00:03, mailer=esmtp, pri=37225, relay=mail.st2.os3.su. [188.130.155.35], dsn=2.0.0, stat=Sent (OK id=1bksVm-00007o-Vj)
+Sep 16 15:45:07 st5 sm-mta[19446]: u8GCj68P019446: from=<>, size=7513, class=0, nrcpts=1, msgid=<201609161244.u8GCiefK019436@st5.os3.su>, proto=ESMTP, daemon=MTA-v4, relay=mail.st2.os3.su [188.130.155.35]
+Sep 16 15:45:08 st5 sm-mta[19449]: STARTTLS=client, relay=mail.st2.os3.su., version=TLSv1.2, verify=FAIL, cipher=ECDHE-RSA-AES256-GCM-SHA384, bits=256/256
+Sep 16 15:45:10 st5 sm-mta[19449]: u8GCj68P019446: to=horn@st2.os3.su, delay=00:00:03, xdelay=00:00:03, mailer=esmtp, pri=37702, relay=mail.st2.os3.su. [188.130.155.35], dsn=2.0.0, stat=Sent (OK id=1bksVw-00008b-9e)
+Sep 16 15:45:16 st5 sm-mta[19451]: ruleset=check_relay, arg1=mail.st2.os3.su, arg2=188.130.155.35, relay=mail.st2.os3.su [188.130.155.35], reject=421 4.3.2 Connection rate limit exceeded.

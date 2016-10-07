@@ -1,0 +1,86 @@
+How did i install opendkim fix it 
+
+  subl /etc/opendkim.conf 			# fix the config
+
+ Syslog                  yes
+ UMask                   002
+ Domain                  st5.os3.su
+ KeyFile                 /etc/dkimkeys/mail.private
+ Selector                mail
+ SubDomains              yes
+ OversignHeaders         From
+ Socket                  inet:8891@localhost
+
+
+  sudo addgroup opendkim
+
+  sudo adduser opendkim opendkim 		# add group and users
+
+  sudo apt install opendkim-tools		# install utility for key generation
+
+  sudo opendkim-genkey -D /etc/dkimkeys/mail.private -d st5.os3.su -s mail		# generate keys: 2 new files created: mail.txt and mail.private
+
+  sudo nano /etc/nsd/zones/st5.os3.su.zone 		# add record from file mail.txt to the zonefile
+
+  
+  sudo service nsd restart			# restart dns service to apply new txt record
+  
+  dig mail._domainkey.st5.os3.su TXT 	# check if it's all right
+; <<>> DiG 9.10.3-P4-Ubuntu <<>> mail._domainkey.st5.os3.su txt
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 45948
+;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 2, ADDITIONAL: 2
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;mail._domainkey.st5.os3.su.	IN	TXT
+
+;; ANSWER SECTION:
+mail._domainkey.st5.os3.su. 1800 IN	TXT	"v=DKIM1; k=rsa; " "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDEwMICCqjZ6ZIHOUDDKl6ZntzAY24rV0NhitPMcKJSF453XHwzJOHQCC8ywk+uN3zIROF4p/Rvk1D5qOeA5HIgRPjY8d0CbwqDlU8E8q4SfYoawNwL2jZYEZ2aVLOUwcFleTlj1lUnmv8SCIh6a856AVrMEh7tCFkZVjRk284DewIDAQAB"
+
+;; AUTHORITY SECTION:
+st5.os3.su.		1800	IN	NS	st5.os3.su.
+st5.os3.su.		1800	IN	NS	st6.os3.su.
+
+;; ADDITIONAL SECTION:
+st5.os3.su.		1800	IN	A	188.130.155.38
+
+;; Query time: 0 msec
+;; SERVER: 188.130.155.38#53(188.130.155.38)
+;; WHEN: Fri Sep 23 13:56:24 MSK 2016
+;; MSG SIZE  rcvd: 351
+
+  sudo service opendkim restart		# apply changes: catch fails
+  
+  journalctl -xe					# try to know what went wrong
+
+-- Defined-By: systemd
+-- Support: http://lists.freedesktop.org/mailman/listinfo/systemd-devel
+-- 
+-- Unit opendkim.service has finished shutting down.
+Sep 22 19:32:18 st5.os3.su systemd[1]: Starting DomainKeys Identified Mail (DKIM) Milter...
+-- Subject: Unit opendkim.service has begun start-up
+-- Defined-By: systemd
+-- Support: http://lists.freedesktop.org/mailman/listinfo/systemd-devel
+-- 
+-- Unit opendkim.service has begun starting up.
+Sep 22 18:58:56 st5.os3.su systemd[1]: Starting DomainKeys Identified Mail (DKIM) Milter...
+Sep 22 18:58:56 st5.os3.su opendkim[30778]: /etc/mail/dkim.key: key data is not secure: /etc/mail is writeable and owned by uid 123 which is not the executing uid (125) or the superuser		# that's it!!!!!
+Sep 22 18:58:56 st5.os3.su opendkim[30778]: opendkim: /etc/opendkim.conf: /etc/mail is writeable and owned by uid 123 which is not the executing uid (125) or the superuser
+Sep 22 18:58:56 st5.os3.su systemd[1]: opendkim.service: Control process exited, code=exited status=78
+Sep 22 18:58:56 st5.os3.su systemd[1]: Failed to start DomainKeys Identified Mail (DKIM) Milter.
+Sep 22 18:58:56 st5.os3.su systemd[1]: opendkim.service: Unit entered failed state.
+Sep 22 18:58:56 st5.os3.su systemd[1]: opendkim.service: Failed with result 'exit-code'.
+
+
+  sudo chgrp opendkim /etc/dkimkeys/					# fix the problem
+  sudo chgrp opendkim /etc/dkimkeys/mail.private 
+
+  sudo chmod 0640 /etc/dkimkeys/mail.private 	# set permissions
+
+  sudo service opendkim restart		# apply changes
+
+  journalctl -xe				# check if something went wrong, but it's okay

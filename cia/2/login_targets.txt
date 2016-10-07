@@ -1,0 +1,13 @@
+tyvision@st5:/lib/systemd/system$ for name in `ls | grep login`; do echo "$name"; cat $name | grep -i -E "(After|Before|Wants)"; done
+dbus-org.freedesktop.login1.service
+Wants=user.slice
+After=nss-user-lookup.target user.slice
+Wants=dbus.socket
+After=dbus.socket
+org.freedesktop.login1.busname
+rmnologin.service
+systemd-logind.service
+Wants=user.slice
+After=nss-user-lookup.target user.slice
+Wants=dbus.socket
+After=dbus.socket

@@ -1,0 +1,16 @@
+build/
+*.aux
+*.log
+*.out
+*.bbl
+*.blg
+*.lof
+*.synctex.gz
+*.toc
+.DS_Store
+*.lot
+*.fdb_latexmk
+*.fls
+*.swp
+_minted*/
+flask/

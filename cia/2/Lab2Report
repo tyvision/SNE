@@ -1,0 +1,150 @@
+CIA LAB BOOTING (2)
+
+LOADING THE OS
+
+1. What is an UEFI OS loader and where does the Ubuntu OS loader reside on the system?
+
+UEFI OS loader is a special type of application that normally takes over control of the system from firmware conforming to this specification. When loaded, the OS loader behaves like any other UEFI application in that it must only use memory it has allocated from the firmware and can only use UEFI services and protocols to access the devices that the firmware exposes.
+
+OS Loader as other UEFI applications stored in directories specific to software vendors. It resides on EFI defined directories in the root directory. EFI Partition Table (ESP) labelled with GUID (Globalle unique identifier). This data stored in GPT Partition entry (GUID value = C12A7328-F81F-11D2-BA4B-00A0C93EC93B) (EFI System) 
+
+The following sample directory structure for an ESP present on a hard disk
+\EFI
+	\<OS Vendor 1 Directory>
+	<OS Loader Image>
+	\<OS Vendor 2 Directory>
+	<OS Loader Image>
+	. . .
+	\<OS Vendor N Directory>
+	<OS Loader Image>
+	\<OEM Directory>
+	<OEM Application Image>
+	\<BIOS Vendor Directory>
+	<BIOS Vendor Application Image>
+	\<Third Party Tool Vendor Directory>
+	<Third Party Tool Vendor Application Image>
+	\BOOT
+		BOOT{machine type short name}.EFI
+
+The shown structure can differ for removable media devices.
+\EFI
+	\BOOT
+		BOOT{machine type short name}.EFI
+
+
+2. Describe in order all the steps required for booting the computer (util the OS starts running)
+
+(figure image: screenshot)
+
+Figure shows UEFI's booting sequence. The EFI Image Load enters in a loop which iteratively loads EFI drivers and applications. EFI applications are modular pieces of code like EFI drivers are. When all the drivers and applications have been loaded, the execution control is transferred to the EFI OS loader. The EFI OS loader has an ordered list of EFI OS loaders which it will use to load an OS. Instead of loading an OS it can also start a UEFI Shell. 
+
+
+3. What is the purpose of the GRUB bootloader in UEFI System?
+
+GRUB understands the underlying filesystems. 
+GRUB boot loader provides menus of choices and can handle many different forms of hardware
+
+Grub will find the /boot/grub/menu.lst which configures its interactive menu. The location of the menu.lst, is hard-coded into grub when it is installed to the boot sector. Grub locates and loads the kernel and the initrd, using BIOS calls and its build-in recognition of file systems. And finally boots the kernel.
+
+In some cases, the operating system is split over several partitions (like /usr), and these partitions are mounted by the boot scripts as soon as they can be. 
+
+4. How does the <!!!Ubuntu!!!> UEFI OS loader load the GRUB boot loader? 
+
+The boot manager will attempt to load UEFI drivers and UEFI applications (including UEFI OS boot loaders) in an order defined by the global NVRAM variables.
+EFI can boot from a device using the EFI_SIMPLE_FILE_SYSTEM_PROTOCOL or the EFI_LOAD_FILE_PROTOCOL. A device that supports the EFI_SIMPLE_FILE_SYSTEM_PROTOCOL must materialize a file system protocol for that device to be bootable. If a device does not wish to support a complete file system it may produce an EFI_LOAD_FILE_PROTOCOL which allows it to materialize an image directly. The Boot Manager will attempt to boot using the EFI_SIMPLE_FILE_SYSTEM_PROTOCOL first. If that fails, then the EFI_LOAD_FILE_PROTOCOL will be used.
+
+To generate a file name when none is present in the FilePath, the firmware must append a default file name in the form \EFI\BOOT\BOOT{machine type short-name}.EFI where machine type short-name defines a PE32+ image format architecture. Each file only contains one UEFI image type, and a system may support booting from one or more images types. Table 12 lists the UEFI image types.
+
+(figure filetypes.png)
+
+EFI Boot Manager loads EFI Image (*.efi) of grub in \EFI\BOOT\BOOT{machine type short-name}.EFI 
+
+
+5. Explain how the GRUB boot loader, in turn, loads and run the kernel by answering these 3 questions:
+(a) What type of filesystem is the kernel on?
+
+Linux kernels could be on any filesystem: ext{2,3,4}, fat{16,32}, ntfs, vfs and so on. You can write you own filesystem and reassembly the kernel. 
+
+(b) What type(s) of filesystem does UEFI support?
+
+Devices that support the Simple File System protocol return an EFI_FILE_PROTOCOL. The only function of this interface is to open a handle to the root directory of the file system on the volume. Once opened, all accesses to the volume are performed through the volume’s file handles, using the EFI_FILE_PROTOCOL protocol. The volume is closed by closing all the open file handles. The firmware automatically creates handles for any block device that supports the following file system formats:
+• FAT12
+• FAT16
+• FAT32
+
+(c) What does the GRUB boot loader therefore have to do to load the kernel?
+New version of GRUB (+ picture)
+
+Grub passes 3 stages.
+Stage 1: boot.img is stored in the master boot record (MBR) or optionally in any of the volume boot records (VBRs), and addresses the next stage by an LBA48 address (thus, the 1024-cylinder limitation of GRUB legacy is avoided); at installation time it is configured to load the first sector of core.img.
+Stage 1.5: core.img is by default written to the sectors between the MBR and the first partition, when these sectors are free and available. For legacy reasons, the first partition of a hard drive does not begin at sector 1 (counting begins with 0) but at sector 63, leaving a gap of 62 sectors of empty space. That space is not part of any partition or file system, and therefore not prone to any problems related with it. Once executed, core.img will load its configuration file and any other modules needed, particularly file system drivers; at installation time, it is generated from diskboot.img and configured to load the stage 2 by its file path.
+Stage 2: files belonging to the stage 2 are all being held in the /boot/grub directory, which is a subdirectory of the /boot directory specified by the Filesystem Hierarchy Standard (FHS)
+Once GRUB stage 2 has loaded, it presents a TUI-based operating system selection (kernel selection) menu, where the user can select which operating system to boot. GRUB can be configured to automatically load a specified kernel after a user-defined timeout; if the timeout is set to zero seconds, pressing and holding ⇧ Shift while the computer is booting makes it possible to access the boot menu
+
+
+6. Do you need an OS loader and/or boot loader to load a linux kernel with UEFI? - Explain why of why not
+
+Since version 3.3.x, and only on EFI machines, it is possible to boot the Linux kernel without using a bootloader such as GRUB. So 2 ways can be used:
+
+In the first case you can start Linux kernel via boot loader (e.g. GRUB2). To start GRUB EFI loader goes (in case we use ubuntu loader) /boot/efi/EFI/ubuntu/grub{ia32, x64}.efi. After start GRUB will find the /boot/grub/menu.lst which configures its interactive menu to choose which OS to start.
+
+In the second case you are able to start linux kernel via only EFI OS Loader. But you have to complete theese requirements:
+
+	- UEFI [UEFI only] mode in settings must be supported;
+	- OS 64-bit;
+	- Linux (Kernel >= 3.3).
+
+Moreover, you have to set kernel parameters: CONFIG_EFI=y; CONFIG_EFI_STUB=y; CONFIG_EFI_VARS=y (switch on UEFI standeart support, enable booting kernel via UEFI (EFI boot stub), control UEFI using variables - to set path to kernel image)
+
+After that to load Linux kernel with UEFI you need to paste kernel file bootx64.efi to /boot/efi/EFI/boot/bootx64.efi.
+
+In summary, EFI OS Loader is a usual EFI Application (section 2.1.3 in UEFI specification). So it depends on a vendor of UEFI. Bootloaders like GRUB are now necessary for systems which supports booting via EFI OS Loader. Moreover, some vendors implement nice boot menu list like GRUB does, so users won't feel uncomfortable.
+
+
+
+
+7. How many stages does GRUB have in MBR-based system and what is their task?
+
+In such systems GRUB has 3 stages (as shown in the figure)
+(insert figure about grub)
+Stage 1: boot.img is stored in the master boot record (MBR) or optionally in any of the volume boot records (VBRs), and addresses the next stage by an LBA48 address (thus, the 1024-cylinder limitation of GRUB legacy is avoided); at installation time it is configured to load the first sector of core.img.
+Stage 1.5: core.img is by default written to the sectors between the MBR and the first partition, when these sectors are free and available. For legacy reasons, the first partition of a hard drive does not begin at sector 1 (counting begins with 0) but at sector 63, leaving a gap of 62 sectors of empty space. That space is not part of any partition or file system, and therefore not prone to any problems related with it. Once executed, core.img will load its configuration file and any other modules needed, particularly file system drivers; at installation time, it is generated from diskboot.img and configured to load the stage 2 by its file path.
+Stage 2: files belonging to the stage 2 are all being held in the /boot/grub directory, which is a subdirectory of the /boot directory specified by the Filesystem Hierarchy Standard (FHS)
+Once GRUB stage 2 has loaded, it presents a TUI-based operating system selection (kernel selection) menu, where the user can select which operating system to boot. GRUB can be configured to automatically load a specified kernel after a user-defined timeout; if the timeout is set to zero seconds, pressing and holding ⇧ Shift while the computer is booting makes it possible to access the boot menu
+ 
+
+
+
+8. Where are the different stages found on the disk?
+Stage 1 resides in the MBR and because it is very small code, it basically loads the next Stage from a defined location on the disk within the first 1024 cylinders.
+
+Stage 1 can load Stage 2 directly, but it’s normally set up to load Stage 1.5. Grub Stage 1.5 is located in the first 30 kilobytes of hard disk immediately following the MBR and before the first partition. Stage 1.5 can contain any drivers needed and it then loads Stage 2. Stage 2 will then load the default configuration file and any other modules needed. These files are located in the /boot/grub/ directory.
+
+
+INITIALIZING THE OS
+
+9. Describe the entire startup process of Ubuntu 16.04 in the default installation. The subquestions below arE leaders to help you along, they must be answered but by no means represent the entire startup process of Ubuntu...
+(a) What is the first process started by the kernel?
+
+First process startd by the kernel is "init"(in most Linux systems it is sysvinit). It is the parent of all processes on the system, it is responsible for starting all other processes; take processes which parents died under control. Processes managed by init are known as jobs and are defined by files in the /etc/init directory. The proper location for it (on a Linux system) is /sbin/init.
+
+(b) Where is the configuration kept for the started process?
+The first thing init does, is reading its initialization file, /etc/inittab. This instructs init to read an initial configuration script for the environment, which sets the path, starts swapping, checks the file systems, and so on. Basically, this step takes care of everything that your system needs to have done at system initialization: setting the clock, initializing serial ports and so forth.
+
+Then init continues to read the /etc/inittab file, which describes how the system should be set up in each run level and sets the default run level. A run level is a configuration of processes. All UNIX-like systems can be run in different process configurations, such as the single user mode, which is referred to as run level 1 or run level S (or s). In this mode, only the system administrator can connect to the system. It is used to perform maintenance tasks without risks of damaging the system or user data. Naturally, in this configuration we don't need to offer user services, so they will all be disabled. Another run level is the reboot run level, or run level 6, which shuts down all running services according to the appropriate procedures and then restarts the system.
+
+P.S. There are some more configuration files (such as /etc/X11 directory - determines which display manager to start; /etc/default directory - contains entries for a range of functions and services)
+
+(c) What is the order of execution of started processes?
+(figure -> plot.svg)
+
+10. To understand the workings of daemons in Ubuntu, we are going to take a closer look at one aspect of the booting process: networking. Please describe the workings of Ubuntu desktop here (Ubuntu server networking is actually simpler):
+(a) How is the networking started? Include the names of all configuration files
+and utilities.
+
+
+(b) Which process manages the networking configuration?
+Process called NetworkManager. It attempts to keep an active network connectin avaliable at all times.
+It's composed from 2 parts: 
+	1) A daemon running as root (/etc/init.d/network-manager) 
+	2) A front-end 

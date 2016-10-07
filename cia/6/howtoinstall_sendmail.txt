@@ -1,0 +1,12 @@
+=========== COMMANDS TO INSTALL SENDMAIL ====================
+
+apt-get update && apt-get install -y m4 build-essential wget
+wget ftp://ftp.sendmail.org/pub/sendmail/sendmail.8.15.2.tar.gz
+wget ftp://ftp.sendmail.org/pub/sendmail/sendmail.8.15.2.tar.gz.sig
+wget http://www.sendmail.com/sm/open_source/security/pgp_keys/sendmail2015.asc
+gpg --import sendmail2015.asc
+gpg --verify sendmail.8.15.2.tar.gz.sig
+
+echo "APPENDDEF(\`confLIBS',\`-lresolv')" >> devtools/Site/site.config.m4
+./Build -c
+./Build install

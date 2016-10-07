@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="zootopia.xsl"?>
+<zootopia>
+    <animal id="1">
+        <type>sheep</type>
+        <skin>
+            <colortype>monotonous</colortype>
+            <palette>dim</palette>
+        </skin>
+        <noise>
+            <voice>beee</voice>
+            <loudness>middle</loudness>
+            <range>baritone</range>
+        </noise>
+        <eyes>
+            <size>mid</size>
+            <form>oval</form>
+        </eyes>
+    </animal>
+    <animal id="2">
+         <type>cow</type>
+        <skin>
+            <colortype>mixed</colortype>
+            <palette>black-white</palette>
+        </skin>
+        <noise>
+            <voice>meee</voice>
+            <loudness>high</loudness>
+            <range>bass</range>
+        </noise>
+        <eyes>
+            <size>big</size>
+            <form>square</form>
+        </eyes>
+    </animal>    
+    <animal id="3">
+         <type>wolf</type>
+        <skin>
+            <colortype>monotonous</colortype>
+            <palette>dark</palette>
+        </skin>
+        <noise>
+            <voice>aouw</voice>
+            <loudness>loud</loudness>
+            <range>alto</range>
+        </noise>
+        <eyes>
+            <size>mid</size>
+            <form>triangle</form>
+        </eyes>
+    </animal>    
+    <animal id="4">
+         <type>mockingbird</type>
+        <skin>
+            <colortype>mixed</colortype>
+            <palette>bright</palette>
+        </skin>
+        <noise>
+            <voice>chirp</voice>
+            <loudness>mid</loudness>
+            <range>soprano</range>
+        </noise>
+        <eyes>
+            <size>tiny</size>
+            <form>circular</form>
+        </eyes>
+    </animal>    
+    <animal id="5">
+         <type>eagle</type>
+        <skin>
+            <colortype>monotonous</colortype>
+            <palette>brown</palette>
+        </skin>
+        <noise>
+            <voice>qwee</voice>
+            <loudness>loud</loudness>
+            <range>alto</range>
+        </noise>
+        <eyes>
+            <size>mid</size>
+            <form>circular</form>
+        </eyes>
+    </animal>
+</zootopia>    

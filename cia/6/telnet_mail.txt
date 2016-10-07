@@ -1,0 +1,38 @@
+tyvision@tyvision95:/etc/mail$ telnet st5.os3.su 25
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+220 st5.os3.su ESMTP Sendmail 8.15.2/8.15.2/Debian-3; Wed, 7 Sep 2016 20:09:48 +0300; (No UCE/UBE) logging access from: localhost(OK)-localhost [127.0.0.1]
+HELO st5.os3.su
+250 st5.os3.su Hello localhost [127.0.0.1], pleased to meet you
+MAIL FROM: a.tykushin@st5.os3.su
+250 2.1.0 a.tykushin@st5.os3.su... Sender ok
+RCPT TO: tyvision@st5.os3.su
+250 2.1.5 tyvision@st5.os3.su... Recipient ok
+DATA
+354 Enter mail, end with "." on a line by itself
+Subject: Feel it
+
+Now we're gonna start.
+.
+250 2.0.0 u87H9mH2007182 Message accepted for delivery
+QUIT
+221 2.0.0 st5.os3.su closing connection
+Connection closed by foreign host.
+
+
+======================================================================
+RECEIVED MESSAGE
+======================================================================
+
+From a.tykushin@st5.os3.su  Wed Sep  7 20:11:20 2016
+Return-Path: <a.tykushin@st5.os3.su>
+Received: from st5.os3.su (localhost [127.0.0.1])
+	by st5.os3.su (8.15.2/8.15.2/Debian-3) with SMTP id u87H9mH2007182
+	for tyvision@st5.os3.su; Wed, 7 Sep 2016 20:10:26 +0300
+Date: Wed, 7 Sep 2016 20:09:48 +0300
+From: a.tykushin@st5.os3.su
+Message-Id: <201609071710.u87H9mH2007182@st5.os3.su>
+Subject: Feel it
+
+Now we're gonna start.

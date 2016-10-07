@@ -1,0 +1,16 @@
+<!DOCTYPE zootopia [
+<!ELEMENT zootopia (animal+)>
+<!ELEMENT animal (type,skin,noise,eyes)>
+<!ELEMENT type (#PCDATA)>
+<!ELEMENT skin (colortype,palette)>
+<!ELEMENT noise (voice,loudness,range)>
+<!ELEMENT eyes (size,form)>
+<!ELEMENT colortype (#PCDATA)>
+<!ELEMENT palette (#PCDATA)>
+<!ELEMENT voice (#PCDATA)>
+<!ELEMENT loudness (#PCDATA)>
+<!ELEMENT range (#PCDATA)>
+<!ELEMENT size (#PCDATA)>
+<!ELEMENT form (#PCDATA)>
+]>
+tal

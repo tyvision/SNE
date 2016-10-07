@@ -1,0 +1,95 @@
+tyvision@tyvision95:~$ gpg sendmail.8.15.2.tar.gz.sig
+gpg: keyring `/home/tyvision/.gnupg/secring.gpg' created
+gpg: keyring `/home/tyvision/.gnupg/pubring.gpg' created
+gpg: assuming signed data in `sendmail.8.15.2.tar.gz'
+gpg: Signature made Thu 02 Jul 2015 03:39:10 PM MSK using RSA key ID 05BDCC53
+gpg: Can't check signature: public key not found
+
+
+
+
+
+tyvision@tyvision95:~$ gpg gpg_sendmail.asc 
+pub  2048R/05BDCC53 2015-01-02 Sendmail Signing Key/2015 <sendmail@Sendmail.ORG>
+sub  2048R/0FFC4819 2015-01-02
+tyvision@tyvision95:~$ gpg sendmail.8.15.2.tar.gz.sig 
+gpg: assuming signed data in `sendmail.8.15.2.tar.gz'
+gpg: Signature made Thu 02 Jul 2015 03:39:10 PM MSK using RSA key ID 05BDCC53
+gpg: Can't check signature: public key not found
+
+
+
+
+
+tyvision@tyvision95:~$ gpg --keyserver pgpkeys.mit.edu --recv-key 05BDCC53
+gpg: requesting key 05BDCC53 from hkp server pgpkeys.mit.edu
+gpg: /home/tyvision/.gnupg/trustdb.gpg: trustdb created
+gpg: key 05BDCC53: public key "Sendmail Signing Key/2015 <sendmail@Sendmail.ORG>" imported
+gpg: no ultimately trusted keys found
+gpg: Total number processed: 1
+gpg:               imported: 1  (RSA: 1)
+
+
+
+
+tyvision@tyvision95:~$ gpg sendmail.8.15.2.tar.gz.sig 
+gpg: assuming signed data in `sendmail.8.15.2.tar.gz'
+gpg: Signature made Thu 02 Jul 2015 03:39:10 PM MSK using RSA key ID 05BDCC53
+gpg: Good signature from "Sendmail Signing Key/2015 <sendmail@Sendmail.ORG>"
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 30BC A747 05FA 4154 5573  1D7B AAF5 B5DE 05BD CC53
+
+
+
+
+tyvision@tyvision95:~$ gpg --edit-key sendmail@Sendmail.ORG trust
+gpg (GnuPG) 1.4.20; Copyright (C) 2015 Free Software Foundation, Inc.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+
+gpg: checking the trustdb
+gpg: no ultimately trusted keys found
+pub  2048R/05BDCC53  created: 2015-01-02  expires: never       usage: SC  
+                     trust: full          validity: unknown
+sub  2048R/0FFC4819  created: 2015-01-02  expires: never       usage: E   
+[ unknown] (1). Sendmail Signing Key/2015 <sendmail@Sendmail.ORG>
+
+pub  2048R/05BDCC53  created: 2015-01-02  expires: never       usage: SC  
+                     trust: full          validity: unknown
+sub  2048R/0FFC4819  created: 2015-01-02  expires: never       usage: E   
+[ unknown] (1). Sendmail Signing Key/2015 <sendmail@Sendmail.ORG>
+
+Please decide how far you trust this user to correctly verify other users' keys
+(by looking at passports, checking fingerprints from different sources, etc.)
+
+  1 = I don't know or won't say
+  2 = I do NOT trust
+  3 = I trust marginally
+  4 = I trust fully
+  5 = I trust ultimately
+  m = back to the main menu
+
+Your decision? 5
+Do you really want to set this key to ultimate trust? (y/N) y
+
+pub  2048R/05BDCC53  created: 2015-01-02  expires: never       usage: SC  
+                     trust: ultimate      validity: unknown
+sub  2048R/0FFC4819  created: 2015-01-02  expires: never       usage: E   
+[ unknown] (1). Sendmail Signing Key/2015 <sendmail@Sendmail.ORG>
+Please note that the shown key validity is not necessarily correct
+unless you restart the program.
+
+
+
+
+
+tyvision@tyvision95:~$ gpg sendmail.8.15.2.tar.gz.sig 
+gpg: assuming signed data in `sendmail.8.15.2.tar.gz'
+gpg: Signature made Thu 02 Jul 2015 03:39:10 PM MSK using RSA key ID 05BDCC53
+gpg: checking the trustdb
+gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
+gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
+gpg: Good signature from "Sendmail Signing Key/2015 <sendmail@Sendmail.ORG>"
+

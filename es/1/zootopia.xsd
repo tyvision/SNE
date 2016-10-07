@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+
+<!-- Definition of attributes -->
+<xs:attribute name="id" type="xs:integer"/>
+
+<!-- Definition of simple elements -->
+<xs:element name="type" type="xs:string"/>
+<xs:element name="voice" type="xs:string"/>
+<xs:element name="loudness" type="xs:string"/>
+<xs:element name="range" type="xs:string"/>
+<xs:element name="colortype" type="xs:string"/>
+<xs:element name="palette" type="xs:string"/>
+<xs:element name="size" type="xs:string"/>
+<xs:element name="form" type="xs:string"/>
+
+<!-- Definition of complex elements 1st level-->
+<xs:element name="skin">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="colortype"/>
+      <xs:element ref="palette"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="noise">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="voice"/>
+      <xs:element ref="loudness"/>
+      <xs:element ref="range"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="eyes">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="size"/>
+      <xs:element ref="form"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<!-- Definition of complex elements 2nd level-->
+<xs:element name="animal">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="type"/>
+      <xs:element ref="skin"/>
+      <xs:element ref="noise"/>
+      <xs:element ref="eyes"/>
+    </xs:sequence>
+    <xs:attribute ref="id" use="required"/>
+  </xs:complexType>
+</xs:element>
+
+<!-- Definition of complex elements 3rd level-->
+<xs:element name="zootopia">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="animal" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+</xs:schema>

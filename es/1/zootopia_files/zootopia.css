@@ -1,0 +1,30 @@
+td {
+    background: #99ccff;
+}
+th {
+    background: #336699;  
+}
+.id-theme {
+    color: #0f0;
+}
+.name-theme:hover {
+    color: #00f;
+}
+.voice-theme {
+    color: #00f;
+}
+.voice-theme:hover {
+    color: #0f0;
+}
+.skin-theme {
+    color: #f00;
+}
+.skin:hover {
+    color: #f0f;
+}
+.eye-theme {
+    color: #f00;
+}
+.eye-theme:hover {
+    color: #f0f;
+}

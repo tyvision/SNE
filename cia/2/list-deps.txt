@@ -1,0 +1,132 @@
+default.target
+● ├─accounts-daemon.service
+● ├─apache2.service
+● ├─apport.service
+● ├─cgroupfs-mount.service
+● ├─grub-common.service
+● ├─irqbalance.service
+● ├─lightdm.service
+● ├─ondemand.service
+● ├─saslauthd.service
+● ├─sendmail.service
+● ├─speech-dispatcher.service
+● ├─systemd-update-utmp-runlevel.service
+● ├─ureadahead.service
+● └─multi-user.target
+●   ├─anacron.service
+●   ├─apache2.service
+●   ├─apport.service
+●   ├─avahi-daemon.service
+●   ├─bind9.service
+●   ├─cgroupfs-mount.service
+●   ├─cron.service
+●   ├─cups-browsed.service
+●   ├─cups.path
+●   ├─dbus.service
+●   ├─dns-clean.service
+●   ├─docker.service
+●   ├─grub-common.service
+●   ├─irqbalance.service
+●   ├─ModemManager.service
+●   ├─networking.service
+●   ├─NetworkManager.service
+●   ├─nsd.service
+●   ├─ondemand.service
+●   ├─plymouth-quit-wait.service
+●   ├─plymouth-quit.service
+●   ├─pppd-dns.service
+●   ├─rc-local.service
+●   ├─rsyslog.service
+●   ├─saslauthd.service
+●   ├─sendmail.service
+●   ├─snapd.boot-ok.service
+●   ├─snapd.firstboot.service
+●   ├─snapd.service
+●   ├─speech-dispatcher.service
+●   ├─ssh.service
+●   ├─systemd-ask-password-wall.path
+●   ├─systemd-logind.service
+●   ├─systemd-update-utmp-runlevel.service
+●   ├─systemd-user-sessions.service
+●   ├─thermald.service
+●   ├─ufw.service
+●   ├─vboxautostart-service.service
+●   ├─vboxballoonctrl-service.service
+●   ├─vboxdrv.service
+●   ├─vboxweb-service.service
+●   ├─whoopsie.service
+●   ├─basic.target
+●   │ ├─-.mount
+●   │ ├─alsa-restore.service
+●   │ ├─alsa-state.service
+●   │ ├─tmp.mount
+●   │ ├─paths.target
+●   │ │ └─acpid.path
+●   │ ├─slices.target
+●   │ │ ├─-.slice
+●   │ │ └─system.slice
+●   │ ├─sockets.target
+●   │ │ ├─acpid.socket
+●   │ │ ├─apport-forward.socket
+●   │ │ ├─avahi-daemon.socket
+●   │ │ ├─cups.socket
+●   │ │ ├─dbus.socket
+●   │ │ ├─docker.socket
+●   │ │ ├─snapd.socket
+●   │ │ ├─systemd-initctl.socket
+●   │ │ ├─systemd-journald-audit.socket
+●   │ │ ├─systemd-journald-dev-log.socket
+●   │ │ ├─systemd-journald.socket
+●   │ │ ├─systemd-udevd-control.socket
+●   │ │ ├─systemd-udevd-kernel.socket
+●   │ │ └─uuidd.socket
+●   │ ├─sysinit.target
+●   │ │ ├─apparmor.service
+●   │ │ ├─brltty.service
+●   │ │ ├─console-setup.service
+●   │ │ ├─dev-hugepages.mount
+●   │ │ ├─dev-mqueue.mount
+●   │ │ ├─friendly-recovery.service
+●   │ │ ├─keyboard-setup.service
+●   │ │ ├─kmod-static-nodes.service
+●   │ │ ├─plymouth-read-write.service
+●   │ │ ├─plymouth-start.service
+●   │ │ ├─proc-sys-fs-binfmt_misc.automount
+●   │ │ ├─resolvconf.service
+●   │ │ ├─setvtrgb.service
+●   │ │ ├─sys-fs-fuse-connections.mount
+●   │ │ ├─sys-kernel-config.mount
+●   │ │ ├─sys-kernel-debug.mount
+●   │ │ ├─systemd-ask-password-console.path
+●   │ │ ├─systemd-binfmt.service
+●   │ │ ├─systemd-hwdb-update.service
+●   │ │ ├─systemd-journal-flush.service
+●   │ │ ├─systemd-journald.service
+●   │ │ ├─systemd-machine-id-commit.service
+●   │ │ ├─systemd-modules-load.service
+●   │ │ ├─systemd-random-seed.service
+●   │ │ ├─systemd-sysctl.service
+●   │ │ ├─systemd-timesyncd.service
+●   │ │ ├─systemd-tmpfiles-setup-dev.service
+●   │ │ ├─systemd-tmpfiles-setup.service
+●   │ │ ├─systemd-udev-trigger.service
+●   │ │ ├─systemd-udevd.service
+●   │ │ ├─systemd-update-utmp.service
+●   │ │ ├─cryptsetup.target
+●   │ │ ├─local-fs.target
+●   │ │ │ ├─-.mount
+●   │ │ │ ├─boot-efi.mount
+●   │ │ │ ├─systemd-fsck-root.service
+●   │ │ │ └─systemd-remount-fs.service
+●   │ │ └─swap.target
+●   │ │   ├─dev-disk-by\x2duuid-ba9aa24d\x2d2f20\x2d4956\x2d89c1\x2dd27c219b2f4...
+●   │ │   └─dev-sda3.swap
+●   │ └─timers.target
+●   │   ├─apt-daily.timer
+●   │   ├─snapd.refresh.timer
+●   │   └─systemd-tmpfiles-clean.timer
+●   ├─getty.target
+●   │ ├─getty-static.service
+●   │ └─getty@tty1.service
+●   └─remote-fs.target
+●     └─remote-fs-pre.target
