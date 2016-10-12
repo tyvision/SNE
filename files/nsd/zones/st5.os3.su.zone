@@ -1,0 +1,46 @@
+$ORIGIN st5.os3.su.
+$TTL 1800
+@       IN      SOA     st5.os3.su.         mail.st5.os3.su. (
+                        201609261600        ; serial number (was 201609261516)
+                        3600                    ; refresh
+                        900                     ; retry
+                        1209600                 ; expire
+                        1800                    ; ttl
+                        )
+; Name servers
+                    IN      A       188.130.155.38
+                    IN      NS      st5.os3.su.
+                    IN      NS      st6.os3.su.
+;Mail
+		MX	10	mail.st5.os3.su.
+        	MX      20  	mail.st2.os3.su.
+		MX	30	mail.st3.os3.su.
+resmail		MX      15  	mail.st5.os3.su.
+
+mail.st5.os3.su.		IN	A	188.130.155.38
+st6.st5.os3.su.                 IN      A       188.130.155.39
+st6.st5.os3.su.                 IN      NS      st6.os3.su.
+
+
+cia                     IN  A   188.130.155.39
+b                       IN  A   188.130.155.37
+qwe                     IN  A   188.130.155.38
+
+; A records for name servers
+www                  IN      A       188.130.155.38
+@                    IN      A       188.130.155.38
+
+; Canonical names 
+numbaone             CNAME           sne1
+godmail              CNAME           thegod.st5.os3.su.
+
+
+st6.st5.os3.su.        IN DS 1528 12 1 60B91FA482D5776F6939A5513D21FBC7854AF7EC
+st6.st5.os3.su.        IN DS 1528 12 2 19FA386ADE337DD9CE56A6F76AF487C8627C9415A90A2C8D504F74CA 5B483745
+
+; For other
+@  IN  TXT ( "v=spf1 ip4:188.130.155.38 ~all" )
+mail IN TXT ( "v=spf1 ip4:188.130.155.38 ~all" )
+
+default._domainkey	IN	TXT	( "v=DKIM1; k=rsa; "
+	  "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDHoFp3oshKGuGM/riWFlFzaA/z8e+uO2qwwsXoUXrbkWPUF6jMiC7SMQJRe1/TE/uzfd83mVVtbMsROTd0ymu36vkD7UjlJy0V9jEFbbw5QuFZAOgEG+Jhi9VdBYRclYpatS16Nc+EeUcovCr2glz2Ls/+V2DaWdvYu716ncKRawIDAQAB" )  ; ----- DKIM key default for st5.os3.su

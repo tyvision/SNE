@@ -1,0 +1,18 @@
+$ORIGIN 5.192.10.in-addr.arpa. ; default zone domain
+$TTL 86400       ; default time to live
+
+@ 		IN 		SOA 	st5.os3.su.      godofzone.st5.os3.su. (
+                        2014070312        ; serial number (was 201407201)
+                        3600                    ; refresh
+                        900                     ; retry
+                        1209600                 ; expire
+                        1800                    ; ttl
+                        )
+
+; Name servers
+						IN 	NS 		sne1.st5.os3.su
+						IN 	NS 		sne2.st5.os3.su
+; PTR Records 
+1						IN 	PTR		sne1.st5.os3.su
+58						IN 	PTR		sne2.st5.os3.su
+77						IN 	PTR		sne3.st5.os3.su

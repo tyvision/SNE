@@ -1,0 +1,65 @@
+# NSD configuration file for Debian.
+#
+# See the nsd.conf(5) man page.
+#
+# See /usr/share/doc/nsd/examples/nsd.conf for a commented
+# reference config file.
+#
+# The following line includes additional configuration files from the
+# /etc/nsd/nsd.conf.d directory.
+
+# WARNING: The glob style doesn't work yet...
+# include: "/etc/nsd/nsd.conf.d/*.conf"
+
+server:
+    do-ip4: yes
+    do-ip6: no
+    #ip-address: 188.130.155.38
+    interface: 188.130.155.38
+    #ip-transparent: yes
+    #ip-freebind: yes
+    debug-mode: yes
+    #port: 5355
+    port: 53
+    username: nsd
+    verbosity: 3
+    zonesdir: "/etc/nsd/zones"
+    logfile: "/var/log/nsd.log"
+    pidfile: "/run/nsd/nsd.pid"
+
+key:
+    name: "atkm_signature"
+    algorithm: hmac-sha256
+    secret: "62435dfc4159ba01bc1f1f3f99ad6d820d1f42d33c74e03dfb9a1dfc03067fc7"
+
+zone:
+    name: "st5.os3.su"
+    #zonefile: "st5.os3.su.zone.signed"
+    zonefile: "st5.os3.su.zone"
+    #notify: 188.130.155.39 NOKEY
+    #notify: 127.0.0.1 NOKEY
+    provide-xfr: 0.0.0.0/0 NOKEY
+    #include-pattern: "toslave"
+
+#========== Zone to request for it ============
+zone: 
+    name: "st6.st5.os3.su"
+    zonefile: "st6.st5.os3.su.zone"
+    allow-notify: 188.130.155.39 NOKEY
+    allow-notify: 127.0.0.1 NOKEY
+    request-xfr: 188.130.155.39 NOKEY
+
+#========== Zone to reply for it ============
+zone:
+    name: "st5.st6.os3.su"
+    #zonefile: "st5.st6.os3.su.zone.signed"
+    
+    notify: 188.130.155.39 NOKEY
+    notify: 127.0.0.1 NOKEY
+    provide-xfr: 188.130.155.39 NOKEY
+
+zone: 
+	name: "5.192.10.in-addr.arpa"
+	zonefile: "10.192.5.zone"
+    #provide-xfr: 0.0.0.0/0 NOKEY        #???
+    #provide-xfr: ::0/0 NOKEY            #??? no need??

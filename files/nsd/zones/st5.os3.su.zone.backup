@@ -1,0 +1,35 @@
+$ORIGIN st5.os3.su.
+$TTL 1800
+@       IN      SOA     st5.os3.su.         mail.st5.os3.su. (
+                        2014070312        ; serial number (was 201407201)
+                        3600                    ; refresh
+                        900                     ; retry
+                        1209600                 ; expire
+                        1800                    ; ttl
+                        )
+; Name servers
+                    IN      A       188.130.155.38
+                    IN      NS      st5.os3.su.
+                    IN      NS      st6.os3.su.
+;Mail
+		MX	10	mail.st5.os3.su.
+        	MX      20  	mail.st2.os3.su.
+		MX	30	mail.st3.os3.su.
+resmail		MX      15  	mail.st5.os3.su.
+
+mail.st5.os3.su.		IN	A	188.130.155.38
+st6.st5.os3.su.                 IN      A       188.130.155.39
+st6.st5.os3.su.                 IN      NS      st6.os3.su.
+
+mail._domainkey IN  TXT ( "v=DKIM1; k=rsa; "
+      "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDEwMICCqjZ6ZIHOUDDKl6ZntzAY24rV0NhitPMcKJSF453XHwzJOHQCC8ywk+uN3zIROF4p/Rvk1D5qOeA5HIgRPjY8d0CbwqDlU8E8q4SfYoawNwL2jZYEZ2aVLOUwcFleTlj1lUnmv8SCIh6a856AVrMEh7tCFkZVjRk284DewIDAQAB" )  ; ----- DKIM key mail for st5.os3.su
+
+; A records for name servers
+www                  IN      A       188.130.155.38
+@                    IN      A       188.130.155.38
+
+; Canonical names 
+numbaone             CNAME           sne1
+godmail              CNAME           thegod.st5.os3.su.
+
+; For other

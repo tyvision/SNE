@@ -1,0 +1,15 @@
+$ORIGIN st5.st6.os3.su.
+              IN     SOA   st5.st6.os3.su. sne.st5.st6.os3.su. (
+                        2016062901        		; serial number (was 201407201)
+                        3600                    ; refresh
+                        900                     ; retry
+                        1209600                 ; expire
+                        1800                    ; ttl
+                        )
+
+                IN	NS	st5.st6.os3.su.
+                IN 	NS	sne.st5.st6.os3.su.
+
+st5.st6.os3.su.			IN 	A 	188.130.155.38
+sne2.st5.st6.os3.su.	IN  A   188.130.155.34                   
+ssne.st5.st6.os3.su.	IN  A   188.130.155.34                   

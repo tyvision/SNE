@@ -1,0 +1,10 @@
+127.0.0.1 OK
+ClientRate:127.0.0.1 0
+ClientRate: 10
+ClientConn:127.0.0.1 0
+ClientConn: 10
+GreetPause:localhost 0
+To:st5.os3.su RELAY
+To:st3.os3.su RELAY
+To:st2.os3.su RELAY
+To:st10.os3.su RELAY

@@ -1,0 +1,2 @@
+default._domainkey	IN	TXT	( "v=DKIM1; k=rsa; "
+	  "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDHoFp3oshKGuGM/riWFlFzaA/z8e+uO2qwwsXoUXrbkWPUF6jMiC7SMQJRe1/TE/uzfd83mVVtbMsROTd0ymu36vkD7UjlJy0V9jEFbbw5QuFZAOgEG+Jhi9VdBYRclYpatS16Nc+EeUcovCr2glz2Ls/+V2DaWdvYu716ncKRawIDAQAB" )  ; ----- DKIM key default for st5.os3.su
